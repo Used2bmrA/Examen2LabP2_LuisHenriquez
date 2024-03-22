@@ -417,9 +417,8 @@ public class Main extends javax.swing.JFrame {
         
         HiloBarra barra1 = new HiloBarra(pb_barra1, (Carro) modelo1.getSelectedItem());
         HiloBarra barra2 = new HiloBarra(pb_barra2, (Carro) modelo2.getSelectedItem());
-        
-        barra1.start();
-        barra2.start();
+        AdministradorHilos admin = new AdministradorHilos(barra1, barra2, jd_crear);
+        admin.start();
 
         
         
