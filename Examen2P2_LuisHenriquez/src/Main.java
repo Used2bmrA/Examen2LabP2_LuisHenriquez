@@ -1,4 +1,8 @@
 //Fila 3 - Asiento 8
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 //Fila 3 - Asiento 8
@@ -14,6 +18,34 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        AdministradorCarro admin = new AdministradorCarro("./Naves.vrm");
+        admin.cargarArchivo();
+        DefaultComboBoxModel modeloCB1 = (DefaultComboBoxModel) cb_jugador1.getModel();
+        DefaultComboBoxModel modeloCB2 = (DefaultComboBoxModel) cb_jugador2.getModel();
+        
+        for (Carro vroom : admin.getCarros()) {
+           modeloCB1.addElement(vroom);
+        } 
+        
+        for (Carro vroom : admin.getCarros()) {
+           modeloCB2.addElement(vroom);
+        } 
+        
+        try {
+            Carro carroInicial = admin.getCarros().get(0);
+            lb_marca1.setText(carroInicial.getMarca());
+            lb_marca2.setText(carroInicial.getMarca());
+            lb_modelo1.setText(carroInicial.getModelo());
+            lb_modelo2.setText(carroInicial.getModelo());
+            lb_velocidad1.setText(String.valueOf(carroInicial.getVelocidad()) + " vrooms por hora");
+            lb_velocidad2.setText(String.valueOf(carroInicial.getVelocidad()) + " vrooms por hora");
+            
+        } catch (IndexOutOfBoundsException e) {
+        }
+        
+        
+        cb_jugador1.setModel(modeloCB1);
+        cb_jugador2.setModel(modeloCB2);
     }
 //Fila 3 - Asiento 8
     /**
@@ -35,13 +67,23 @@ public class Main extends javax.swing.JFrame {
         tf_modelo = new javax.swing.JTextField();
         bt_agregar = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
+        jd_jugar = new javax.swing.JDialog();
+        jPanel4 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        pb_barra1 = new javax.swing.JProgressBar();
+        pb_barra2 = new javax.swing.JProgressBar();
+        jLabel15 = new javax.swing.JLabel();
+        bt_jugar = new javax.swing.JButton();
+        lb_jugador1 = new javax.swing.JLabel();
+        lb_jugador2 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        lb_cronometro = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         bt_crear = new javax.swing.JButton();
         bt_iniciar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cb_jugador2 = new javax.swing.JComboBox<>();
         cb_jugador1 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -56,6 +98,7 @@ public class Main extends javax.swing.JFrame {
         lb_marca2 = new javax.swing.JLabel();
         lb_modelo2 = new javax.swing.JLabel();
         lb_velocidad2 = new javax.swing.JLabel();
+        cb_jugador2 = new javax.swing.JComboBox<>();
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -109,6 +152,60 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
         );
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel4.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 380, 10));
+
+        pb_barra1.setStringPainted(true);
+        jPanel4.add(pb_barra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, -1));
+
+        pb_barra2.setStringPainted(true);
+        jPanel4.add(pb_barra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel15.setText("Tiempo");
+        jPanel4.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
+
+        bt_jugar.setText("Iniciar");
+        bt_jugar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_jugarMouseClicked(evt);
+            }
+        });
+        jPanel4.add(bt_jugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, -1, -1));
+
+        lb_jugador1.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lb_jugador1.setForeground(new java.awt.Color(0, 0, 0));
+        lb_jugador1.setText("lb_jugador1");
+        jPanel4.add(lb_jugador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, -1, -1));
+
+        lb_jugador2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lb_jugador2.setForeground(new java.awt.Color(0, 0, 0));
+        lb_jugador2.setText("lb_jugador2");
+        jPanel4.add(lb_jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel16.setText("Progreso");
+        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, -1, -1));
+
+        lb_cronometro.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        lb_cronometro.setForeground(new java.awt.Color(0, 0, 0));
+        lb_cronometro.setText("00:00:00");
+        jPanel4.add(lb_cronometro, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, -1));
+
+        javax.swing.GroupLayout jd_jugarLayout = new javax.swing.GroupLayout(jd_jugar.getContentPane());
+        jd_jugar.getContentPane().setLayout(jd_jugarLayout);
+        jd_jugarLayout.setHorizontalGroup(
+            jd_jugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        jd_jugarLayout.setVerticalGroup(
+            jd_jugarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -128,6 +225,11 @@ public class Main extends javax.swing.JFrame {
         jPanel1.add(bt_crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, -1, -1));
 
         bt_iniciar.setText("Iniciar");
+        bt_iniciar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_iniciarMouseClicked(evt);
+            }
+        });
         jPanel1.add(bt_iniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 450, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -140,8 +242,11 @@ public class Main extends javax.swing.JFrame {
         jLabel4.setText("Jugador 1");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 90, -1));
 
-        jPanel1.add(cb_jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 160, -1));
-
+        cb_jugador1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_jugador1ItemStateChanged(evt);
+            }
+        });
         jPanel1.add(cb_jugador1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 160, -1));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -181,39 +286,46 @@ public class Main extends javax.swing.JFrame {
 
         lb_marca1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lb_marca1.setForeground(new java.awt.Color(0, 0, 0));
-        lb_marca1.setText("jLabel6");
+        lb_marca1.setText("lb_marca1");
         jPanel1.add(lb_marca1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, -1, -1));
 
         lb_modelo1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lb_modelo1.setForeground(new java.awt.Color(0, 0, 0));
-        lb_modelo1.setText("jLabel7");
+        lb_modelo1.setText("lb_modelo1");
         jPanel1.add(lb_modelo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, -1, -1));
 
         lb_velocidad1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lb_velocidad1.setForeground(new java.awt.Color(0, 0, 0));
-        lb_velocidad1.setText("jLabel8");
+        lb_velocidad1.setText("lb_velocidad1");
         jPanel1.add(lb_velocidad1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, -1, -1));
 
         lb_marca2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lb_marca2.setForeground(new java.awt.Color(0, 0, 0));
-        lb_marca2.setText("jLabel6");
+        lb_marca2.setText("lb_marca2");
         jPanel1.add(lb_marca2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, -1, -1));
 
         lb_modelo2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lb_modelo2.setForeground(new java.awt.Color(0, 0, 0));
-        lb_modelo2.setText("jLabel7");
+        lb_modelo2.setText("lb_modelo2");
         jPanel1.add(lb_modelo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
 
         lb_velocidad2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         lb_velocidad2.setForeground(new java.awt.Color(0, 0, 0));
-        lb_velocidad2.setText("jLabel8");
+        lb_velocidad2.setText("lb_velocidad2");
         jPanel1.add(lb_velocidad2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 420, -1, -1));
+
+        cb_jugador2.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_jugador2ItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(cb_jugador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 170, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,21 +355,78 @@ public class Main extends javax.swing.JFrame {
             velocidad = (int) sp_velocidad.getValue();
             Carro nuevoCarro = new Carro(marca, modelo, velocidad);
             
-            AdministradorCarro admin = new AdministradorCarro("./Naves.rgb");
+            AdministradorCarro admin = new AdministradorCarro("./Naves.vrm");
+            admin.cargarArchivo();
             admin.getCarros().add(nuevoCarro);
+            admin.escribirArchivo();
+            
+            DefaultComboBoxModel modeloCB1 = (DefaultComboBoxModel) cb_jugador1.getModel();
+            modeloCB1.addElement(nuevoCarro);
+            cb_jugador1.setModel(modeloCB1);
+            
+            DefaultComboBoxModel modeloCB2 = (DefaultComboBoxModel) cb_jugador2.getModel();
+            modeloCB2.addElement(nuevoCarro);
+            cb_jugador2.setModel(modeloCB2);
+            
             JOptionPane.showMessageDialog(jd_crear, "Vroom vroom!");
             tf_marca.setText("");
             tf_modelo.setText("");
             sp_velocidad.setValue(0);
-            
-            DefaultComboBoxModel modeloCB = new DefaultComboBoxModel(admin.getCarros().toArray());
-            cb_jugador1.setModel(modeloCB);
-            cb_jugador2.setModel(modeloCB);
-            
-            admin.escribirArchivo();
             jd_crear.dispose();
         }
     }//GEN-LAST:event_bt_agregarMouseClicked
+
+    private void cb_jugador1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_jugador1ItemStateChanged
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_jugador1.getModel();
+        Carro carroActual = (Carro) modelo.getSelectedItem();
+        lb_marca1.setText(carroActual.getMarca());
+        lb_modelo1.setText(carroActual.getModelo());
+        lb_velocidad1.setText(String.valueOf(carroActual.getVelocidad()) + " vrooms por hora");
+        
+    }//GEN-LAST:event_cb_jugador1ItemStateChanged
+
+    private void cb_jugador2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_jugador2ItemStateChanged
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_jugador2.getModel();
+        Carro carroActual = (Carro) modelo.getSelectedItem();
+        lb_marca2.setText(carroActual.getMarca());
+        lb_modelo2.setText(carroActual.getModelo());
+        lb_velocidad2.setText(String.valueOf(carroActual.getVelocidad()) + " vrooms por hora");
+    }//GEN-LAST:event_cb_jugador2ItemStateChanged
+
+    private void bt_iniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_iniciarMouseClicked
+        DefaultComboBoxModel modelo1 = (DefaultComboBoxModel) cb_jugador1.getModel();
+        Carro carro1 = (Carro) modelo1.getSelectedItem();
+        lb_jugador1.setText(carro1.toString());
+        
+        DefaultComboBoxModel modelo2 = (DefaultComboBoxModel) cb_jugador2.getModel();
+        Carro carro2 = (Carro) modelo2.getSelectedItem();
+        lb_jugador2.setText(carro2.toString());
+        
+        
+        jd_jugar.pack();
+        jd_jugar.setLocationRelativeTo(this);
+        jd_jugar.setVisible(true);
+    }//GEN-LAST:event_bt_iniciarMouseClicked
+
+    private void bt_jugarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_jugarMouseClicked
+        
+        
+        DefaultComboBoxModel modelo1 = (DefaultComboBoxModel) cb_jugador1.getModel();
+        DefaultComboBoxModel modelo2 = (DefaultComboBoxModel) cb_jugador2.getModel();
+        
+        
+        HiloBarra barra1 = new HiloBarra(pb_barra1, (Carro) modelo1.getSelectedItem());
+        HiloBarra barra2 = new HiloBarra(pb_barra2, (Carro) modelo2.getSelectedItem());
+        
+        barra1.start();
+        barra2.start();
+
+        
+        
+        
+        String direccion = "sunflower.wav";
+        Play(direccion);
+    }//GEN-LAST:event_bt_jugarMouseClicked
 //Fila 3 - Asiento 8
     /**
      * @param args the command line arguments
@@ -298,6 +467,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton bt_agregar;
     private javax.swing.JButton bt_crear;
     private javax.swing.JButton bt_iniciar;
+    private javax.swing.JButton bt_jugar;
     private javax.swing.JComboBox<String> cb_jugador1;
     private javax.swing.JComboBox<String> cb_jugador2;
     private javax.swing.JLabel jLabel1;
@@ -306,6 +476,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -316,19 +488,42 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JDialog jd_crear;
+    private javax.swing.JDialog jd_jugar;
+    private javax.swing.JLabel lb_cronometro;
+    private javax.swing.JLabel lb_jugador1;
+    private javax.swing.JLabel lb_jugador2;
     private javax.swing.JLabel lb_marca1;
     private javax.swing.JLabel lb_marca2;
     private javax.swing.JLabel lb_modelo1;
     private javax.swing.JLabel lb_modelo2;
     private javax.swing.JLabel lb_velocidad1;
     private javax.swing.JLabel lb_velocidad2;
+    private javax.swing.JProgressBar pb_barra1;
+    private javax.swing.JProgressBar pb_barra2;
     private javax.swing.JSpinner sp_velocidad;
     private javax.swing.JTextField tf_marca;
     private javax.swing.JTextField tf_modelo;
     // End of variables declaration//GEN-END:variables
 //Fila 3 - Asiento 8
 //Fila 3 - Asiento 8
+    public static void Play(String direccion){
+        try {
+            File direccionMusica = new File (direccion);
+            if (direccionMusica.exists()) {
+                AudioInputStream audio = AudioSystem.getAudioInputStream(direccionMusica);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audio);
+                clip.start();   
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
 //Fila 3 - Asiento 8    
 //Fila 3 - Asiento 8    
 }
