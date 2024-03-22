@@ -53,7 +53,6 @@ public class HiloBarra extends Thread{
             if(avanzar){
                 barra.setValue(barra.getValue() + carro.getVelocidad()/25);
                 if(barra.getValue() ==100){
-                    JOptionPane.showMessageDialog(barra, "Ganó el " + carro.getMarca() + " " + carro.getModelo() + "!");
                     vive =false;
                 }                
             }

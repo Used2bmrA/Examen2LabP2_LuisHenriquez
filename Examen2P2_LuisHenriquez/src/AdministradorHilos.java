@@ -20,17 +20,18 @@ public class AdministradorHilos extends Thread{
         barra2.start();
         
         while (avanzar) {
-            if(!barra1.isVive()){
+            
+            if(barra1.getBarra().getValue() == 100){
                 barra2.setAvanzar(false);
                 JOptionPane.showMessageDialog(dialogo, "Ganó el " + barra1.getCarro().getMarca() + " " + barra1.getCarro().getModelo() + "!");
                 avanzar = false;
-            }else if(!barra2.isVive()){
+            }else if(barra2.getBarra().getValue() == 100){
                 barra1.setAvanzar(false);
                 JOptionPane.showMessageDialog(dialogo, "Ganó el " + barra2.getCarro().getMarca() + " " + barra2.getCarro().getModelo() + "!");
                 avanzar = false;
             }
             try {
-                Thread.sleep(10);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
             }
             
